@@ -1,4 +1,4 @@
-# study-space
+# Study Space
 Social Network where users share available study spaces on campus.
 
 ## Developers
