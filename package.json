@@ -4,6 +4,9 @@
   "private": true,
   "dependencies": {
     "google-maps-react": "^2.0.2",
+    "primeflex": "^1.0.0-rc.1",
+    "primeicons": "^1.0.0",
+    "primereact": "^2.0.0-rc.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-scripts": "2.1.1"
