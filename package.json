@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "classnames": "^2.2.6",
     "google-maps-react": "^2.0.2",
     "primeflex": "^1.0.0-rc.1",
     "primeicons": "^1.0.0",
