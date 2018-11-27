@@ -3,7 +3,6 @@
 * Password: string
 * Email: string
 * image: string
-* review: Review []
 
 # Review
 * rating: int
@@ -11,14 +10,14 @@
 * body: string
 * timestamp: string
 * Location: Location
-* User
+* Username: String
 
 # Location
-* Street Address:
-    * Street: string
-    * City: string
-    * State: string
-    * Zip: string
+* ID: int
+* Street: string
+* City: string
+* State: string
+* Zip: string
 * Name: string
 * Short-Name: string
 
