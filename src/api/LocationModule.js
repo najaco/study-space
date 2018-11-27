@@ -6,7 +6,6 @@
  * including listing all locations, adding and deleting a review
  *
  */
-
 class LocationModule {
 
     /**
@@ -51,9 +50,7 @@ class LocationModule {
     loadLocations(data) {
         // reset current location names
         this.location_names = [];
-        // TODO: validate that data is an array of strings with @Nathan Cohen
-        // TODO: ask about short names and that data type
-        // for now that is assumed to be the case
+        // load
         for (let i = 0; i < data.length; i++) {
             this.location_names.push(data[i]);
         }
@@ -85,13 +82,12 @@ class LocationModule {
         return this.current_location;
     }
 
-    // TODO: get urls and implement them here
     /**
      * @returns {string} url http request to server for getting
      * a list of locations from the database
      */
     getListOfLocationsURL() {
-        return "";
+        return SERVER_URL + "locations?command=list";
     }
 
     /**
@@ -99,7 +95,7 @@ class LocationModule {
      * the data about a specific location from the database
      */
     getLocationDataURL(location_name) {
-        return "" + location_name;
+        return SERVER_URL + "locations?command=get&name=" + location_name;
     }
 
     /**
@@ -107,9 +103,15 @@ class LocationModule {
      * a review for at the current location
      */
     getPostReviewToLocationURL() {
-        return "";
+        return SERVER_URL + "locations?command=review";
     }
 
 }
 
+/**
+ * @type {string} url to server
+ */
+const SERVER_URL = "https://2vdx6dl0a1.execute-api.us-east-1.amazonaws.com/prod/";
+
+// public class
 export default LocationModule;
