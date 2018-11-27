@@ -1,10 +1,12 @@
 # User
+* ID: int
 * Username: string
 * Password: string
 * Email: string
 * image: string
 
 # Review
+* ID: int
 * rating: int
 * header: string
 * body: string
