@@ -97,6 +97,31 @@ class ReviewModule {
     }
 
     /**
+     * @description returns a new review object with the given parameters
+     * @param rating - the rating of the review
+     * @param title - 255 character title of the review
+     * @param description - 255 description of the review
+     * @param timestamp - time review was submitted on the client
+     * @param location - full name of the location
+     * @param username - the username of the user submitting the review
+     * @returns {Readonly<{ID: number, rating: *, header: *, body: *, timestamp: *, Location: *, Username: *}>}
+     */
+    buildReview(rating, title, description, timestamp, location, username) {
+        return Object.freeze(
+            {
+                "ID": 0,
+                "rating": rating,
+                "header": title,
+                "body": description,
+                "timestamp": timestamp,
+                "Location": location,
+                "Username": username,
+            }
+        );
+    }
+
+
+    /**
      * @description swaps two elements in an array
      * @param array - the array the swap is being performed on
      * @param i - the first index being swapped
