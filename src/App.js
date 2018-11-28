@@ -20,18 +20,21 @@ import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { InputText } from 'primereact/inputtext';
 
+import ReviewModule from './api/ReviewModule';
+import LocationModule from './api/LocationModule';
+
+let reviewModule = ReviewModule.getInstance();
+let locationModule = LocationModule.getInstance();
+
 const mapStyles = {
     width: '100%',
     height: '570px'
 };
 
 // Obtain this from database
-var locations = [
-    {label: 'Building1', value: '1'},
-    {label: 'Building2', value: '2'}
-]
+var locations = [];
 
-var curr_location_data_fake = {
+var curr_location_data = {
     name: 'Fake Building Name',
     short_name: 'SHRT',
     average_review: null,
@@ -67,12 +70,71 @@ class App extends Component {
 
     }
 
+    isEmptyObject(obj) {
+        for(var key in obj) {
+            if(obj.hasOwnProperty(key))
+                return false;
+        }
+        return true;
+    }
+
+    componentDidMount() {
+        locationModule.loadLocations(this.getLocations());
+    }
+
+    getLocations() {
+        return fetch(locationModule.getListOfLocationsURL(), {method: "GET"}).then((response) => response.json())
+            .then((responseJson) => {
+                locations = responseJson;
+                this.forceUpdate();
+            })
+            .catch((error) => {
+                console.error(error);
+            }
+        );
+    }
+
+    getLocationData(location) {
+        return fetch(locationModule.getLocationDataURL(location), {method: "GET"}).then((response) => response.json())
+            .then((responseJson) => {
+                if (!this.isEmptyObject(responseJson)) {
+                    curr_location_data = responseJson;
+                } else {
+                    curr_location_data = {
+                        name: 'Wilmeth Active Learning Center',
+                        short_name: 'WALC',
+                        comments: [
+                            {
+                                author: 'Fake 1',
+                                title: 'Love it!',
+                                desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                                rating: 10
+                            },
+                            {
+                                author: 'Fake 2',
+                                title: 'Eh.',
+                                desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                                rating: 5
+                            }
+                        ]
+                    }
+                }
+                this.forceUpdate();
+            })
+            .catch((error) => {
+                console.error(error);
+            }
+        );
+    }
+
     buildingChanged(e) {
+        // TODO: Change building info here
         this.setState({building: e.value});
+        this.getLocationData(e.value);
     }
 
     makePost(e) {
-        curr_location_data_fake.comments.push(
+        curr_location_data.comments.push(
             {
                 author: 'Test',
                 title: this.state.title,
@@ -80,15 +142,16 @@ class App extends Component {
                 desc: this.state.comment
             }
         );
+        console.log(locations);
         this.forceUpdate();
     }
 
     createComments = () => {
         let comments = [];
 
-        curr_location_data_fake.average_review = 0;
+        curr_location_data.average_review = 0;
 
-        for (let comment of curr_location_data_fake.comments) {
+        for (let comment of curr_location_data.comments) {
             comments.push(
                 <div className="p-col-12">
                     <Card title={comment.title} subTitle={comment.author}>
@@ -103,10 +166,10 @@ class App extends Component {
                     </Card>
                 </div>
             );
-            curr_location_data_fake.average_review += comment.rating;
+            curr_location_data.average_review += comment.rating;
         }
 
-        curr_location_data_fake.average_review = curr_location_data_fake.average_review/curr_location_data_fake.comments.length;
+        curr_location_data.average_review = curr_location_data.average_review/curr_location_data.comments.length;
 
         return comments;
     }
@@ -165,6 +228,7 @@ class App extends Component {
                                 <div className="p-col-12" style={{'text-align': 'left'}}>
                                     <h4>Select Building:</h4>
                                     <Dropdown style={{'width': '150px'}} 
+                                        optionLabel="location"
                                         value={this.state.building} 
                                         options={locations} 
                                         onChange={this.buildingChanged} 
@@ -176,7 +240,7 @@ class App extends Component {
                                 </div>
                                 <div className="p-col-12" style={{'text-align': 'left'}}>
                                     <h4>Name:</h4> 
-                                    {curr_location_data_fake.name} ({curr_location_data_fake.short_name})
+                                    {curr_location_data.name} ({curr_location_data.short_name})
                                 </div>
                                 
                                 <div className="p-col-12" style={{'text-align': 'left'}}>
@@ -186,7 +250,7 @@ class App extends Component {
 
                                 <div className="p-col-12" style={{'text-align': 'left'}}>
                                     <h4>Average rating:</h4>
-                                    <Rating value={curr_location_data_fake.average_review} readonly={true} stars={10} cancel={false} />
+                                    <Rating value={curr_location_data.average_review} readonly={true} stars={10} cancel={false} />
                                 </div>         
                                 
                             </div>
