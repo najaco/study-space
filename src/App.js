@@ -147,14 +147,19 @@ class App extends Component {
         return (
             <div className="App">
                 <div className="p-grid p-col-12">
-                    <div className="p-col-6">
+                    <div className="p-col-8">
                         <GMap options={{
                                 center: {lat: 40.4318914, lng: -86.91750952604869},
                                 zoom: 14
                             }} style={mapStyles}
                         />
                     </div>
-                    <div className="p-col-3">
+                    <div className="p-col-4">
+                        <Card style={{'width': '100%', 'height': '570px', 'text-align': 'left'}} title={"Give a Review"}>
+                            {this.maybeAllowNewComment()} 
+                        </Card>
+                    </div>
+                    <div className="p-col-12">
                         <Card style={{'width': '100%', 'height': '100%', 'text-align': 'left'}} title={"Study Space"}>
                             <div className="p-grid">
                                 <div className="p-col-12" style={{'text-align': 'left'}}>
@@ -186,11 +191,6 @@ class App extends Component {
                                 
                             </div>
 
-                        </Card>
-                    </div>
-                    <div className="p-col-3">
-                        <Card style={{'width': '100%', 'text-align': 'left'}} title={"Give a Review"}>
-                            {this.maybeAllowNewComment()} 
                         </Card>
                     </div>
                 </div>
