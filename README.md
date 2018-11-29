@@ -13,3 +13,6 @@ Social Network where users share available study spaces on campus.
 - React JSX  (frontend)
 - AWS Lambda (backend)
 - RDS MySQL  (database)
+
+## Website Link
+[ec2-18-215-159-158.compute-1.amazonaws.com](ec2-18-215-159-158.compute-1.amazonaws.com)
