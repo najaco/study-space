@@ -15,4 +15,4 @@ Social Network where users share available study spaces on campus.
 - RDS MySQL  (database)
 
 ## Website Link
-[ec2-18-215-159-158.compute-1.amazonaws.com](ec2-18-215-159-158.compute-1.amazonaws.com)
+[ec2-18-215-159-158.compute-1.amazonaws.com](https://www.ec2-18-215-159-158.compute-1.amazonaws.com)
