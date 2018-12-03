@@ -64,6 +64,22 @@ class ReviewModule {
     }
 
     /**
+     * @description takes all the reviews currently loaded into
+     * the client and averages their ratings and returns the result
+     * @returns {number} - the average rating of all the reviews
+     * currently loaded into the client
+     */
+    averageRating() {
+        let rating = 0;
+        for (let i = 0; i < this.reviews.length; i++) {
+            let review = this.reviews[i];
+            rating += review.rating;
+        }
+        rating /= this.reviews.length;
+        return rating;
+    }
+
+    /**
      * @description sorts the reviews stored on the client based on
      * the filter passed. This is an in-place sort and only updates
      * the values on the module level, listReviews will still have
