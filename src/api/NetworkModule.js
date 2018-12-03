@@ -16,7 +16,10 @@ class NetworkModule {
     static httpGet(url, callback) {
         return fetch(url, {method: "GET"})
             .then(response => response.json())
-            .then(responseJson => callback(responseJson));
+            .then(responseJson => callback(responseJson))
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     /**
@@ -33,6 +36,9 @@ class NetworkModule {
         return fetch(url, {method: "POST", body: JSON.stringify(body)})
             .then(response => response.json())
             .then(responseJson => callback(responseJson))
+            .catch(error => {
+                console.log(error);
+            })
     }
 
 }
