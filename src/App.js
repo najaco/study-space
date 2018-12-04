@@ -18,6 +18,7 @@ import {InputText} from 'primereact/inputtext';
 
 import ReviewModule from './api/ReviewModule';
 import LocationModule from './api/LocationModule';
+import Review from "./components/Review";
 
 let reviewModule = ReviewModule.getInstance();
 let locationModule = LocationModule.getInstance();
@@ -50,8 +51,8 @@ class App extends Component {
     }
 
     isEmptyObject(obj) {
-        for(var key in obj) {
-            if(obj.hasOwnProperty(key))
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key))
                 return false;
         }
         return true;
@@ -68,9 +69,9 @@ class App extends Component {
                 this.forceUpdate();
             })
             .catch((error) => {
-                console.error(error);
-            }
-        );
+                    console.error(error);
+                }
+            );
     }
 
     /** Makes a call to the database to obtain the reviews for a particular location */
@@ -81,9 +82,9 @@ class App extends Component {
                 this.forceUpdate();
             })
             .catch((error) => {
-                console.error(error);
-            }
-        );
+                    console.error(error);
+                }
+            );
     }
 
     /** Makes a call to the database to obtain information about a particular location */
@@ -93,7 +94,7 @@ class App extends Component {
                 if (!this.isEmptyObject(responseJson)) {
                     curr_location_data = responseJson[0];
                 } else {
-                    console.error("Location Data Empty!")
+                    console.error("Location Data Empty!");
                     curr_location_data = {
                         location: 'Wilmeth Active Learning Center',
                         shortName: 'WALC',
@@ -116,9 +117,9 @@ class App extends Component {
                 this.getLocationReviews(location);
             })
             .catch((error) => {
-                console.error(error);
-            }
-        );
+                    console.error(error);
+                }
+            );
     }
 
     buildingChanged(e) {
@@ -134,25 +135,25 @@ class App extends Component {
             rating: this.state.review,
             body: this.state.comment,
             timestamp: ReviewModule.getTimestamp()
-        }
+        };
 
-        curr_location_data.comments.push(review)
+        curr_location_data.comments.push(review);
 
         return fetch(reviewModule.getAddReviewURL(review), {method: "GET"}).then((response) => response.json())
             .then((responseJson) => {
                 this.forceUpdate();
             })
             .catch((error) => {
-                console.error(error);
-            }
-        );
+                    console.error(error);
+                }
+            );
     }
 
     createComments = () => {
         let comments = [];
 
         // If there are no comments or the object is empty, exit
-        if (curr_location_data == null || curr_location_data.comments == null || curr_location_data.comments.length === 0 ) {
+        if (curr_location_data == null || curr_location_data.comments == null || curr_location_data.comments.length === 0) {
             return;
         }
 
@@ -160,33 +161,25 @@ class App extends Component {
 
         for (let comment of curr_location_data.comments) {
             comments.push(
-                <div className="p-col-12">
-                    <Card title={comment.header} subTitle={comment.username}>
-                        <div className="p-grid">
-                            <div className="p-col-12" style={{'text-align': 'left'}}>
-                                {comment.body}
-                            </div>
-                            <div className="p-col-12" style={{'text-align': 'left'}}>
-                                <Rating value={comment.rating} readonly={true} stars={10} cancel={false} />
-                            </div>
-                            <div className="p-col-12" style={{'text-align': 'left'}}>
-                                {comment.timestamp}
-                            </div>
-                        </div>
-                    </Card>
-                </div>
+                <Review
+                    header={comment.header}
+                    username={comment.username}
+                    body={comment.body}
+                    rating={comment.rating}
+                    timestamp={comment.timestamp}
+                />
             );
             curr_location_data.average_review += comment.rating;
         }
 
-        curr_location_data.average_review = curr_location_data.average_review/curr_location_data.comments.length;
+        curr_location_data.average_review = curr_location_data.average_review / curr_location_data.comments.length;
 
         return comments;
-    }
+    };
 
     showBuildingData = () => {
         let building_info = [];
-        if (curr_location_data != null & !this.isEmptyObject(curr_location_data)) {
+        if (curr_location_data != null && !this.isEmptyObject(curr_location_data)) {
             building_info.push(
                 <div className="p-col-12" style={{'text-align': 'left'}}>
                     <h4>Building Information:</h4>
@@ -195,11 +188,11 @@ class App extends Component {
 
             building_info.push(
                 <div className="p-col-12" style={{'text-align': 'left'}}>
-                    <h4>Name:</h4> 
+                    <h4>Name:</h4>
                     {curr_location_data.location} ({curr_location_data.shortName})
                 </div>
             );
-                
+
             building_info.push(
                 <div className="p-col-12" style={{'text-align': 'left'}}>
                     <h4>Comments:</h4>
@@ -210,12 +203,12 @@ class App extends Component {
             building_info.push(
                 <div className="p-col-12" style={{'text-align': 'left'}}>
                     <h4>Average rating:</h4>
-                    <Rating value={curr_location_data.average_review} readonly={true} stars={10} cancel={false} />
-                </div>   
-            );  
+                    <Rating value={curr_location_data.average_review} readonly={true} stars={10} cancel={false}/>
+                </div>
+            );
         }
         return building_info;
-    }
+    };
 
     maybeAllowNewComment = () => {
         let comment = [];
@@ -224,45 +217,49 @@ class App extends Component {
 
         if (this.state.building != null) {
             comment.push(
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <h4>Comment Title:</h4> 
-                        <InputText value={this.state.title} onChange={(e) => this.setState({title: e.target.value})} />
-                    </div>
+                <div className="p-col-12" style={{'text-align': 'left'}}>
+                    <h4>Comment Title:</h4>
+                    <InputText value={this.state.title} onChange={(e) => this.setState({title: e.target.value})}/>
+                </div>
             );
             comment.push(
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <h4>Comment Title:</h4> 
-                        <InputTextarea rows={5} cols={30} value={this.state.comment} autoResize={true} onChange={(e) => {this.setState({comment: e.target.value})}} />
-                    </div>
+                <div className="p-col-12" style={{'text-align': 'left'}}>
+                    <h4>Comment Title:</h4>
+                    <InputTextarea rows={5} cols={30} value={this.state.comment} autoResize={true} onChange={(e) => {
+                        this.setState({comment: e.target.value})
+                    }}/>
+                </div>
             );
             comment.push(
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <h4>Give Review:</h4> 
-                        <Rating value={this.state.review} stars={10} cancel={false} onChange={(e) => {this.setState({review: e.target.value})}} />
-                    </div>
+                <div className="p-col-12" style={{'text-align': 'left'}}>
+                    <h4>Give Review:</h4>
+                    <Rating value={this.state.review} stars={10} cancel={false} onChange={(e) => {
+                        this.setState({review: e.target.value})
+                    }}/>
+                </div>
             );
             comment.push(
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <Button label="Post Comment" onClick={this.makePost}/>
-                    </div>
+                <div className="p-col-12" style={{'text-align': 'left'}}>
+                    <Button label="Post Comment" onClick={this.makePost}/>
+                </div>
             );
         } else {
             comment.push(
                 <div className="p-col-12" style={{'text-align': 'left'}}>
                     <h4>Select Building:</h4>
-                    <Dropdown style={{'width': '150px'}} 
-                        optionLabel="location"
-                        value={this.state.building} 
-                        options={locations} 
-                        onChange={this.buildingChanged} 
-                        placeholder="Select a Building"
+                    <Dropdown style={{'width': '150px'}}
+                              optionLabel="location"
+                              value={this.state.building}
+                              options={locations}
+                              onChange={this.buildingChanged}
+                              placeholder="Select a Building"
                     />
                 </div>
             );
         }
 
         return comment;
-    }
+    };
 
     render() {
         return (
@@ -270,14 +267,15 @@ class App extends Component {
                 <div className="p-grid p-col-12">
                     <div className="p-col-8">
                         <GMap options={{
-                                center: {lat: 40.4318914, lng: -86.91750952604869},
-                                zoom: 14
-                            }} style={mapStyles}
+                            center: {lat: 40.4318914, lng: -86.91750952604869},
+                            zoom: 14
+                        }} style={mapStyles}
                         />
                     </div>
                     <div className="p-col-4">
-                        <Card style={{'width': '100%', 'height': '570px', 'text-align': 'left'}} title={"Give a Review"}>
-                            {this.maybeAllowNewComment()} 
+                        <Card style={{'width': '100%', 'height': '570px', 'text-align': 'left'}}
+                              title={"Give a Review"}>
+                            {this.maybeAllowNewComment()}
                         </Card>
                     </div>
                     <div className="p-col-12">
@@ -285,12 +283,12 @@ class App extends Component {
                             <div className="p-grid">
                                 <div className="p-col-12" style={{'text-align': 'left'}}>
                                     <h4>Select Building:</h4>
-                                    <Dropdown style={{'width': '150px'}} 
-                                        optionLabel="location"
-                                        value={this.state.building} 
-                                        options={locations} 
-                                        onChange={this.buildingChanged} 
-                                        placeholder="Select a Building"
+                                    <Dropdown style={{'width': '150px'}}
+                                              optionLabel="location"
+                                              value={this.state.building}
+                                              options={locations}
+                                              onChange={this.buildingChanged}
+                                              placeholder="Select a Building"
                                     />
                                 </div>
                                 {this.showBuildingData()}
