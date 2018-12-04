@@ -79,7 +79,7 @@ class App extends Component {
 
     /** Makes a call to the database to obtain the reviews for a particular location */
     getLocationReviews(location) {
-        return fetch(locationModule.getLocationCommentsURL(location.shortName), {method: "GET"}).then((response) => response.json())
+        return fetch(reviewModule.getLocationCommentsURL(location.shortName), {method: "GET"}).then((response) => response.json())
             .then((responseJson) => {
                 curr_location_data.comments = responseJson;
                 this.forceUpdate();
@@ -131,15 +131,25 @@ class App extends Component {
     }
 
     makePost(e) {
-        curr_location_data.comments.push(
-            {
-                author: 'Test',
-                title: this.state.title,
-                rating: this.state.review,
-                desc: this.state.comment
+        let review = {
+            username: 'Test',
+            loc: this.state.building.shortName,
+            header: this.state.title,
+            rating: this.state.review,
+            body: this.state.comment,
+            timestamp: '12-4-18'
+        }
+
+        curr_location_data.comments.push(review)
+
+        return fetch(reviewModule.getAddReviewURL(review), {method: "GET"}).then((response) => response.json())
+            .then((responseJson) => {
+                this.forceUpdate();
+            })
+            .catch((error) => {
+                console.error(error);
             }
         );
-        this.forceUpdate();
     }
 
     createComments = () => {
