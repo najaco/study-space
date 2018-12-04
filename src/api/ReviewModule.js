@@ -136,6 +136,12 @@ class ReviewModule {
         );
     }
 
+    static getTimestamp() {
+        let date = new Date();
+        let timestamp = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+        timestamp += " - " + date.getHours() + ":" + date.getMinutes();
+        return timestamp;
+    }
 
     /**
      * @description swaps two elements in an array
@@ -163,8 +169,8 @@ class ReviewModule {
      * the comments for a specific location from the database
      */
     getAddReviewURL(review) {
-        return SERVER_URL + 'reviews?command=add&loc=' + review.loc + '&username=' + review.username + '&header=' + review.header 
-            +'&body=' + review.body + '&timestamp=' + review.timestamp + '&rating=' + review.rating;
+        return SERVER_URL + 'reviews?command=add&loc=' + review.loc + '&username=' + review.username + '&header=' + review.header
+            + '&body=' + review.body + '&timestamp=' + review.timestamp + '&rating=' + review.rating;
     }
 }
 

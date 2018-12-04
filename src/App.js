@@ -1,24 +1,20 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
-import MapContainer from "./MapContainer";
-
 /* Google Maps */
-import { Map, GoogleApiWrapper } from 'google-maps-react';
-
+import {GoogleApiWrapper} from 'google-maps-react';
 /* PrimeReact */
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 
-import { GMap } from 'primereact/gmap';
-import { Dropdown } from 'primereact/dropdown';
-import { Card } from 'primereact/card';
-import { Rating } from 'primereact/rating';
-import { Button } from 'primereact/button';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { InputText } from 'primereact/inputtext';
+import {GMap} from 'primereact/gmap';
+import {Dropdown} from 'primereact/dropdown';
+import {Card} from 'primereact/card';
+import {Rating} from 'primereact/rating';
+import {Button} from 'primereact/button';
+import {InputTextarea} from 'primereact/inputtextarea';
+import {InputText} from 'primereact/inputtext';
 
 import ReviewModule from './api/ReviewModule';
 import LocationModule from './api/LocationModule';
@@ -137,7 +133,7 @@ class App extends Component {
             header: this.state.title,
             rating: this.state.review,
             body: this.state.comment,
-            timestamp: '12-4-18'
+            timestamp: ReviewModule.getTimestamp()
         }
 
         curr_location_data.comments.push(review)
@@ -172,6 +168,9 @@ class App extends Component {
                             </div>
                             <div className="p-col-12" style={{'text-align': 'left'}}>
                                 <Rating value={comment.rating} readonly={true} stars={10} cancel={false} />
+                            </div>
+                            <div className="p-col-12" style={{'text-align': 'left'}}>
+                                {comment.timestamp}
                             </div>
                         </div>
                     </Card>
