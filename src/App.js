@@ -19,6 +19,7 @@ import {InputText} from 'primereact/inputtext';
 import ReviewModule from './api/ReviewModule';
 import LocationModule from './api/LocationModule';
 import Review from "./components/Review";
+import BuildingInfo from "./components/BuildingInfo";
 
 let reviewModule = ReviewModule.getInstance();
 let locationModule = LocationModule.getInstance();
@@ -178,36 +179,15 @@ class App extends Component {
     };
 
     showBuildingData = () => {
-        let building_info = [];
         if (curr_location_data != null && !this.isEmptyObject(curr_location_data)) {
-            building_info.push(
-                <div className="p-col-12" style={{'text-align': 'left'}}>
-                    <h4>Building Information:</h4>
-                </div>
-            );
-
-            building_info.push(
-                <div className="p-col-12" style={{'text-align': 'left'}}>
-                    <h4>Name:</h4>
-                    {curr_location_data.location} ({curr_location_data.shortName})
-                </div>
-            );
-
-            building_info.push(
-                <div className="p-col-12" style={{'text-align': 'left'}}>
-                    <h4>Comments:</h4>
-                    {this.createComments()}
-                </div>
-            );
-
-            building_info.push(
-                <div className="p-col-12" style={{'text-align': 'left'}}>
-                    <h4>Average rating:</h4>
-                    <Rating value={curr_location_data.average_review} readonly={true} stars={10} cancel={false}/>
-                </div>
-            );
+            return (<BuildingInfo
+                location={curr_location_data.location}
+                shortName={curr_location_data.shortName}
+                comments={this.createComments()}
+                average_review={curr_location_data.average_review}
+            />);
         }
-        return building_info;
+        return null;
     };
 
     maybeAllowNewComment = () => {
