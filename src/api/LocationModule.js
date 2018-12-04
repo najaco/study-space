@@ -95,7 +95,15 @@ class LocationModule {
      * the data about a specific location from the database
      */
     getLocationDataURL(location_name) {
-        return SERVER_URL + "locations?command=get&name=" + location_name;
+        return SERVER_URL + "locations?command=get&shortName=" + location_name;
+    }
+
+    /**
+     * @returns {string} url http request to server for getting
+     * the comments for a specific location from the database
+     */
+    getLocationCommentsURL(location_name) {
+        return SERVER_URL + 'reviews?command=get&shortLocation=' + location_name;
     }
 
     /**
