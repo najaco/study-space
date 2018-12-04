@@ -140,6 +140,8 @@ class App extends Component {
             timestamp: '12-4-18'
         }
 
+        curr_location_data.comments.push(review)
+
         return fetch(reviewModule.getAddReviewURL(review), {method: "GET"}).then((response) => response.json())
             .then((responseJson) => {
                 this.forceUpdate();
