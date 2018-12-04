@@ -99,14 +99,6 @@ class LocationModule {
     }
 
     /**
-     * @returns {string} url http request to server for getting
-     * the comments for a specific location from the database
-     */
-    getLocationCommentsURL(location_name) {
-        return SERVER_URL + 'reviews?command=get&shortLocation=' + location_name;
-    }
-
-    /**
      * @returns {string} url http request to server for posting
      * a review for at the current location
      */

@@ -150,10 +150,31 @@ class ReviewModule {
         array[j] = temp;
     }
 
+    /**
+     * @returns {string} url http request to server for getting
+     * the comments for a specific location from the database
+     */
+    getLocationCommentsURL(location_name) {
+        return SERVER_URL + 'reviews?command=get&shortLocation=' + location_name;
+    }
+
+    /**
+     * @returns {string} url http request to server for getting
+     * the comments for a specific location from the database
+     */
+    getAddReviewURL(review) {
+        return SERVER_URL + 'reviews?command=add&loc=' + review.loc + '&username=' + review.username + '&header=' + review.header 
+            +'&body=' + review.body + '&timestamp=' + review.timestamp + '&rating=' + review.rating;
+    }
 }
 
 // public class
 export default ReviewModule;
+
+/**
+ * @type {string} url to server
+ */
+const SERVER_URL = "https://2vdx6dl0a1.execute-api.us-east-1.amazonaws.com/prod/";
 
 // sorting enums
 export let ReviewFilters = Object.freeze({"RATING": 0, "TIME_STAMP": 1});
