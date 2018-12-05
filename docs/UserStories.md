@@ -1,5 +1,5 @@
 # As a User...
-* I want to see trafic of the building
+* I want to see traffic of the building
 * I want to see what other users are saying about the traffic
 * I want to view a map of campus
 * I want to select a building
