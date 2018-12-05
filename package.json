@@ -2,9 +2,11 @@
   "name": "study-space",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://nathancohen4299.github.io/study-space/",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios":  "^0.18.0",
     "classnames": "^2.2.6",
+    "gh-pages": "^2.0.1",
     "google-maps-react": "^2.0.2",
     "primeflex": "^1.0.0-rc.1",
     "primeicons": "^1.0.0",
@@ -17,6 +19,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
