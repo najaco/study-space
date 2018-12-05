@@ -185,6 +185,10 @@ class App extends Component {
                 shortName={curr_location_data.shortName}
                 comments={this.createComments()}
                 average_review={curr_location_data.average_review}
+                street={curr_location_data.street}
+                city={curr_location_data.city}
+                state={curr_location_data.state}
+                zip={curr_location_data.zip}
             />);
         }
         return null;
