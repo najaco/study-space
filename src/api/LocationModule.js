@@ -6,6 +6,8 @@
  * including listing all locations, adding and deleting a review
  *
  */
+import NetworkModule, {SERVER_URL} from "./NetworkModule";
+
 class LocationModule {
 
     /**
@@ -107,11 +109,6 @@ class LocationModule {
     }
 
 }
-
-/**
- * @type {string} url to server
- */
-const SERVER_URL = "https://2vdx6dl0a1.execute-api.us-east-1.amazonaws.com/prod/";
 
 // public class
 export default LocationModule;
