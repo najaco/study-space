@@ -21,6 +21,7 @@ import LocationModule from './api/LocationModule';
 import UserModule from './api/UserModule';
 import Review from "./components/Review";
 import BuildingInfo from "./components/BuildingInfo";
+import NetworkModule from "./api/NetworkModule";
 
 let reviewModule = ReviewModule.getInstance();
 let locationModule = LocationModule.getInstance();
@@ -44,22 +45,24 @@ var curr_location_data = {};
 
 class App extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             building: null,
             comment: '',
             title: '',
             username: '',
-            password: ''
+            password: '',
+            email: '',
+            input_state: 0 // 0 is login, 1 is signup, 2 is leave review
         };
 
         this.buildingChanged = this.buildingChanged.bind(this);
         this.makePost = this.makePost.bind(this);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
-
+        this.signup = this.signup.bind(this);
     }
 
     isEmptyObject(obj) {
@@ -85,9 +88,17 @@ class App extends Component {
     logout() {
         username = '';
         password = '';
-        /*this.setState({password: ''});
-        this.setState({username: ''});*/
+        this.setState({password: ''});
+        this.setState({username: ''});
+        this.setState({email: ''});
+        this.setState({input_state: 0});
         this.validateUserData();
+    }
+
+    signup() {
+        NetworkModule.httpGet(userModule.getAddUserURL(this.state.username, this.state.password, this.state.email, "null"), () => {
+            this.setState({input_state: 2});
+        });
     }
 
     getLocations() {
@@ -111,7 +122,7 @@ class App extends Component {
                     console.log();
                     if (password === responseJson[0].password) {
                         uservalid = true;
-                        this.forceUpdate();
+                        this.setState({input_state: 2});
                         return;
                     }
                 }
@@ -245,7 +256,128 @@ class App extends Component {
         return null;
     };
 
-    maybeAllowNewComment = () => {
+    renderInputCard = () => {
+        if (this.state.input_state === 0) {
+            return this.renderLogin();
+        }
+        if (this.state.input_state === 1) {
+            return this.renderSignup();
+        }
+        if (this.state.input_state === 2) {
+            return this.renderLeaveReview();
+        }
+    };
+
+    renderLogin = () => {
+        return (
+            <div className="p-col-12" style={{'text-align': 'left'}}>
+                <h2>Login</h2>
+                <div className="p-col-12" style={{'text-align': 'left'}}>
+                    <h4>Username:</h4>
+                </div>
+                <div className="p-col-12" style={{'text-align': 'left'}}>
+                    <InputText value={this.state.username}
+                               onChange={(e) => this.setState({username: e.target.value})}/>
+                </div>
+                <div className="p-col-12" style={{'text-align': 'left'}}>
+                    <h4>Password:</h4>
+                </div>
+                <div className="p-col-12" style={{'text-align': 'left'}}>
+                    <InputText value={this.state.password}
+                               onChange={(e) => this.setState({password: e.target.value})}/>
+                </div>
+                <div className="p-col-12" style={{'text-align': 'left'}}>
+                    <Button label="Login" onClick={this.login}/>
+                    <Button label="Sign Up" onClick={() => {
+                        this.setState({input_state: 1})
+                    }} style={{'marginLeft': 4}}/>
+                </div>
+            </div>
+        )
+    };
+
+    renderSignup = () => {
+        return (
+            <div className="p-col-12" style={{'text-align': 'left'}}>
+                <h2>Signup</h2>
+                <h4>Username:</h4>
+                <InputText value={this.state.username}
+                           onChange={(e) => this.setState({username: e.target.value})}/>
+
+                <h4>Password:</h4>
+                <InputText value={this.state.password}
+                           onChange={(e) => this.setState({password: e.target.value})}/>
+
+                <h4>Confirm Password:</h4>
+                <InputText value={this.state.password}
+                           onChange={(e) => this.setState({password: e.target.value})}/>
+
+                <h4>Email:</h4>
+                <InputText value={this.state.email}
+                           onChange={(e) => this.setState({email: e.target.value})}/>
+                <div style={{'text-align': 'left', 'marginTop': 4}}>
+                    <Button label="Sign Up" onClick={this.signup}/>
+                </div>
+            </div>
+        );
+    };
+
+    renderLeaveReview = () => {
+        let comment = [];
+        if (this.state.building != null) {
+            comment.push(
+                <div className="p-col-12" style={{'text-align': 'left'}}>
+                    <h4>Comment Title:</h4>
+                    <InputText value={this.state.title} onChange={(e) => this.setState({title: e.target.value})}/>
+                </div>
+            );
+            comment.push(
+                <div className="p-col-12" style={{'text-align': 'left'}}>
+                    <h4>Comment Title:</h4>
+                    <InputTextarea rows={5} cols={30} value={this.state.comment} autoResize={true}
+                                   onChange={(e) => {
+                                       this.setState({comment: e.target.value})
+                                   }}/>
+                </div>
+            );
+            comment.push(
+                <div className="p-col-12" style={{'text-align': 'left'}}>
+                    <h4>Give Review:</h4>
+                    <Rating value={this.state.review} stars={10} cancel={false} onChange={(e) => {
+                        this.setState({review: e.target.value})
+                    }}/>
+                </div>
+            );
+            comment.push(
+                <div className="p-col-12" style={{'text-align': 'left'}}>
+                    <Button label="Post Comment" onClick={this.makePost}/>
+                </div>
+            );
+        } else {
+            comment.push(
+                <div className="p-col-12" style={{'text-align': 'left'}}>
+                    <h4>Select Building:</h4>
+                    <Dropdown style={{'width': '150px'}}
+                              optionLabel="location"
+                              value={this.state.building}
+                              options={locations}
+                              onChange={this.buildingChanged}
+                              placeholder="Select a Building"
+                    />
+                </div>
+            );
+        }
+        comment.push(
+            <div className="p-col-12" style={{'text-align': 'left'}}>
+                <Button label="Logout" onClick={() => {
+                    this.logout()
+                }}/>
+            </div>
+        );
+        return comment;
+    };
+
+   /* maybeAllowNewComment = () => {
         let comment = [];
         // TODO: Allow user to login if they aren't authenticated
         if (uservalid) {
@@ -317,13 +449,14 @@ class App extends Component {
                     </div>
                     <div className="p-col-12" style={{'text-align': 'left'}}>
                         <Button label="Login" onClick={this.login}/>
+                        <Button label="Sign Up" onClick={this.signup} style={{'marginLeft': 4}}/>
                     </div>
                 </div>
             )
         }
 
         return comment;
-    };
+    };*/
 
     render() {
         return (
@@ -339,7 +472,7 @@ class App extends Component {
                     <div className="p-col-4">
                         <Card style={{'width': '100%', 'height': '570px', 'text-align': 'left'}}
                               title={"Give a Review"}>
-                            {this.maybeAllowNewComment()}
+                            {this.renderInputCard()}
                         </Card>
                     </div>
                     <div className="p-col-12">
