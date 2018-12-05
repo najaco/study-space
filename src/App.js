@@ -18,16 +18,23 @@ import {InputText} from 'primereact/inputtext';
 
 import ReviewModule from './api/ReviewModule';
 import LocationModule from './api/LocationModule';
+import UserModule from './api/UserModule';
 import Review from "./components/Review";
 import BuildingInfo from "./components/BuildingInfo";
 
 let reviewModule = ReviewModule.getInstance();
 let locationModule = LocationModule.getInstance();
+let userModule = UserModule.getInstance();
 
 const mapStyles = {
     width: '100%',
     height: '570px'
 };
+
+// Obtain verification from database
+var username = "";
+var password = "";
+var uservalid = false;
 
 // Obtain from database
 var locations = [];
@@ -43,11 +50,14 @@ class App extends Component {
         this.state = {
             building: null,
             comment: '',
-            title: ''
+            title: '',
+            username: '',
+            password: ''
         };
 
         this.buildingChanged = this.buildingChanged.bind(this);
         this.makePost = this.makePost.bind(this);
+        this.login = this.login.bind(this);
 
     }
 
@@ -63,11 +73,43 @@ class App extends Component {
         locationModule.loadLocations(this.getLocations());
     }
 
+    login() {
+        username = this.state.username;
+        password = this.state.password;
+        this.state.password = '';
+        this.state.username = '';
+        this.validateUserData();
+    }
+
     getLocations() {
         return fetch(locationModule.getListOfLocationsURL(), {method: "GET"}).then((response) => response.json())
             .then((responseJson) => {
                 locations = responseJson;
                 this.forceUpdate();
+            })
+            .catch((error) => {
+                    console.error(error);
+                }
+            );
+    }
+
+    validateUserData() {
+        fetch(userModule.getGetUserURL(username), {method: "GET"}).then((response) => response.json())
+            .then((responseJson) => {
+                if (!this.isEmptyObject(responseJson[0])) {
+                    console.log(responseJson[0]);
+                    console.log(password);
+                    console.log()
+                    if (password === responseJson[0].password) {
+                        uservalid = true;
+                        this.forceUpdate();
+                        return;
+                    }
+                }
+
+                uservalid = false;
+                this.forceUpdate();
+                return;
             })
             .catch((error) => {
                     console.error(error);
@@ -130,7 +172,7 @@ class App extends Component {
 
     makePost(e) {
         let review = {
-            username: 'Test',
+            username: username,
             loc: this.state.building.shortName,
             header: this.state.title,
             rating: this.state.review,
@@ -196,52 +238,73 @@ class App extends Component {
 
     maybeAllowNewComment = () => {
         let comment = [];
-        // TODO: Authenticate user before we allow them to comment
         // TODO: Allow user to login if they aren't authenticated
-
-        if (this.state.building != null) {
-            comment.push(
-                <div className="p-col-12" style={{'text-align': 'left'}}>
-                    <h4>Comment Title:</h4>
-                    <InputText value={this.state.title} onChange={(e) => this.setState({title: e.target.value})}/>
-                </div>
-            );
-            comment.push(
-                <div className="p-col-12" style={{'text-align': 'left'}}>
-                    <h4>Comment Title:</h4>
-                    <InputTextarea rows={5} cols={30} value={this.state.comment} autoResize={true} onChange={(e) => {
-                        this.setState({comment: e.target.value})
-                    }}/>
-                </div>
-            );
-            comment.push(
-                <div className="p-col-12" style={{'text-align': 'left'}}>
-                    <h4>Give Review:</h4>
-                    <Rating value={this.state.review} stars={10} cancel={false} onChange={(e) => {
-                        this.setState({review: e.target.value})
-                    }}/>
-                </div>
-            );
-            comment.push(
-                <div className="p-col-12" style={{'text-align': 'left'}}>
-                    <Button label="Post Comment" onClick={this.makePost}/>
-                </div>
-            );
+        if (uservalid) {
+            if (this.state.building != null) {
+                comment.push(
+                    <div className="p-col-12" style={{'text-align': 'left'}}>
+                        <h4>Comment Title:</h4>
+                        <InputText value={this.state.title} onChange={(e) => this.setState({title: e.target.value})}/>
+                    </div>
+                );
+                comment.push(
+                    <div className="p-col-12" style={{'text-align': 'left'}}>
+                        <h4>Comment Title:</h4>
+                        <InputTextarea rows={5} cols={30} value={this.state.comment} autoResize={true} onChange={(e) => {
+                            this.setState({comment: e.target.value})
+                        }}/>
+                    </div>
+                );
+                comment.push(
+                    <div className="p-col-12" style={{'text-align': 'left'}}>
+                        <h4>Give Review:</h4>
+                        <Rating value={this.state.review} stars={10} cancel={false} onChange={(e) => {
+                            this.setState({review: e.target.value})
+                        }}/>
+                    </div>
+                );
+                comment.push(
+                    <div className="p-col-12" style={{'text-align': 'left'}}>
+                        <Button label="Post Comment" onClick={this.makePost}/>
+                    </div>
+                );
+            } else {
+                comment.push(
+                    <div className="p-col-12" style={{'text-align': 'left'}}>
+                        <h4>Select Building:</h4>
+                        <Dropdown style={{'width': '150px'}}
+                                  optionLabel="location"
+                                  value={this.state.building}
+                                  options={locations}
+                                  onChange={this.buildingChanged}
+                                  placeholder="Select a Building"
+                        />
+                    </div>
+                );
+            }
         } else {
             comment.push(
                 <div className="p-col-12" style={{'text-align': 'left'}}>
-                    <h4>Select Building:</h4>
-                    <Dropdown style={{'width': '150px'}}
-                              optionLabel="location"
-                              value={this.state.building}
-                              options={locations}
-                              onChange={this.buildingChanged}
-                              placeholder="Select a Building"
-                    />
+                    <h2>Login</h2>
+                    <div className="p-col-12" style={{'text-align': 'left'}}>
+                        <h4>Username:</h4>
+                    </div>
+                    <div className="p-col-12" style={{'text-align': 'left'}}>
+                        <InputText value={this.state.username} onChange={(e) => this.setState({username: e.target.value})}/>
+                    </div>
+                    <div className="p-col-12" style={{'text-align': 'left'}}>
+                        <h4>Password:</h4>
+                    </div>
+                    <div className="p-col-12" style={{'text-align': 'left'}}>
+                        <InputText value={this.state.password} onChange={(e) => this.setState({password: e.target.value})}/>
+                    </div>
+                    <div className="p-col-12" style={{'text-align': 'left'}}>
+                        <Button label="Login" onClick={this.login}/>
+                    </div>
                 </div>
-            );
+            )
         }
-
+        
         return comment;
     };
 
