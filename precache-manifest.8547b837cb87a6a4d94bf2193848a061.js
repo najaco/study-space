@@ -20,12 +20,12 @@ self.__precacheManifest = [
     "url": "/study-space/static/js/runtime~main.dc782c92.js"
   },
   {
-    "revision": "76b56857ebbae3a5a689f213feb11af0",
-    "url": "/study-space/static/media/open-sans-v15-latin-300.76b56857.eot"
-  },
-  {
     "revision": "60c866748ff15f5b347fdba64596b1b1",
     "url": "/study-space/static/media/open-sans-v15-latin-300.60c86674.woff2"
+  },
+  {
+    "revision": "76b56857ebbae3a5a689f213feb11af0",
+    "url": "/study-space/static/media/open-sans-v15-latin-300.76b56857.eot"
   },
   {
     "revision": "9dce7f01715340861bdb57318e2f3fdc",
