@@ -7,7 +7,8 @@ export default class BuildingInfo extends Component {
         return (
             <div className="p-col-12" style={{'text-align': 'left'}}>
                 <div className="p-col-12" style={{'text-align': 'left'}}>
-                    <h4>Building Information:</h4>
+                    <h4>Building Address:</h4>
+                    {this.props.street} {this.props.city}, {this.props.state} {this.props.zip}
                 </div>
                 <div className="p-col-12" style={{'text-align': 'left'}}>
                     <h4>Name:</h4>
