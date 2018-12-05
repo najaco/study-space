@@ -16,4 +16,4 @@ Social Network where users share available study spaces on campus.
 - Amazon Cloud Watch (Bug Tracking)
 
 ## Website Link
-[ec2-18-215-159-158.compute-1.amazonaws.com](https://tinyurl.com/studyspacepurdue)
+[https://nathancohen4299.github.io/study-space/](https://nathancohen4299.github.io/study-space/)
