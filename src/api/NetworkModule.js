@@ -43,5 +43,10 @@ class NetworkModule {
 
 }
 
+/**
+ * @type {string} url to server
+ */
+export const SERVER_URL = "https://2vdx6dl0a1.execute-api.us-east-1.amazonaws.com/prod/";
+
 // make api public
 export default NetworkModule;
