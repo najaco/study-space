@@ -58,6 +58,7 @@ class App extends Component {
         this.buildingChanged = this.buildingChanged.bind(this);
         this.makePost = this.makePost.bind(this);
         this.login = this.login.bind(this);
+        this.logout = this.logout.bind(this);
 
     }
 
@@ -76,8 +77,16 @@ class App extends Component {
     login() {
         username = this.state.username;
         password = this.state.password;
-        this.state.password = '';
-        this.state.username = '';
+        this.setState({password: ''});
+        this.setState({username: ''});
+        this.validateUserData();
+    }
+
+    logout() {
+        username = '';
+        password = '';
+        /*this.setState({password: ''});
+        this.setState({username: ''});*/
         this.validateUserData();
     }
 
@@ -99,7 +108,7 @@ class App extends Component {
                 if (!this.isEmptyObject(responseJson[0])) {
                     console.log(responseJson[0]);
                     console.log(password);
-                    console.log()
+                    console.log();
                     if (password === responseJson[0].password) {
                         uservalid = true;
                         this.forceUpdate();
@@ -250,9 +259,10 @@ class App extends Component {
                 comment.push(
                     <div className="p-col-12" style={{'text-align': 'left'}}>
                         <h4>Comment Title:</h4>
-                        <InputTextarea rows={5} cols={30} value={this.state.comment} autoResize={true} onChange={(e) => {
-                            this.setState({comment: e.target.value})
-                        }}/>
+                        <InputTextarea rows={5} cols={30} value={this.state.comment} autoResize={true}
+                                       onChange={(e) => {
+                                           this.setState({comment: e.target.value})
+                                       }}/>
                     </div>
                 );
                 comment.push(
@@ -282,6 +292,11 @@ class App extends Component {
                     </div>
                 );
             }
+            comment.push(
+                <div className="p-col-12" style={{'text-align': 'left'}}>
+                    <Button label="Logout" onClick={this.logout}/>
+                </div>
+            );
         } else {
             comment.push(
                 <div className="p-col-12" style={{'text-align': 'left'}}>
@@ -290,13 +305,15 @@ class App extends Component {
                         <h4>Username:</h4>
                     </div>
                     <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <InputText value={this.state.username} onChange={(e) => this.setState({username: e.target.value})}/>
+                        <InputText value={this.state.username}
+                                   onChange={(e) => this.setState({username: e.target.value})}/>
                     </div>
                     <div className="p-col-12" style={{'text-align': 'left'}}>
                         <h4>Password:</h4>
                     </div>
                     <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <InputText value={this.state.password} onChange={(e) => this.setState({password: e.target.value})}/>
+                        <InputText value={this.state.password}
+                                   onChange={(e) => this.setState({password: e.target.value})}/>
                     </div>
                     <div className="p-col-12" style={{'text-align': 'left'}}>
                         <Button label="Login" onClick={this.login}/>
@@ -304,7 +321,7 @@ class App extends Component {
                 </div>
             )
         }
-        
+
         return comment;
     };
 
