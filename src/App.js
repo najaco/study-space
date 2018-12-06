@@ -101,6 +101,10 @@ class App extends Component {
         if (this.state.password === this.state.confirm_password) {
             NetworkModule.httpGet(userModule.getAddUserURL(this.state.username, this.state.password, this.state.email, "null"), () => {
                 this.setState({input_state: 2});
+                username = this.state.username;
+                password = '';
+                this.setState({password: ''});
+                this.setState({username: ''});
             });
         } else {
             // TODO: error prompt that passwords do not match
@@ -197,7 +201,7 @@ class App extends Component {
         if (this.state.header == '' || this.state.review == 0 || this.state.comment == '') {
             return;
         }
-       
+
         let review = {
             username: username,
             loc: this.state.building.shortName,
@@ -295,7 +299,7 @@ class App extends Component {
                 </div>
                 <div className="p-col-12" style={{'text-align': 'left'}}>
                     <Password value={this.state.password} feedback={false}
-                               onChange={(e) => this.setState({password: e.target.value})}/>
+                              onChange={(e) => this.setState({password: e.target.value})}/>
                 </div>
                 <div className="p-col-12" style={{'text-align': 'left'}}>
                     <Button label="Login" onClick={this.login}/>
@@ -317,11 +321,11 @@ class App extends Component {
 
                 <h4>Password:</h4>
                 <Password value={this.state.password}
-                           onChange={(e) => this.setState({password: e.target.value})}/>
+                          onChange={(e) => this.setState({password: e.target.value})}/>
 
                 <h4>Confirm Password:</h4>
                 <Password value={this.state.confirm_password} feedback={false}
-                           onChange={(e) => this.setState({confirm_password: e.target.value})}/>
+                          onChange={(e) => this.setState({confirm_password: e.target.value})}/>
 
                 <h4>Email:</h4>
                 <InputText value={this.state.email}
@@ -387,87 +391,6 @@ class App extends Component {
         );
         return comment;
     };
-
-   /* maybeAllowNewComment = () => {
-        let comment = [];
-        // TODO: Allow user to login if they aren't authenticated
-        if (uservalid) {
-            if (this.state.building != null) {
-                comment.push(
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <h4>Comment Title:</h4>
-                        <InputText value={this.state.title} onChange={(e) => this.setState({title: e.target.value})}/>
-                    </div>
-                );
-                comment.push(
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <h4>Comment Title:</h4>
-                        <InputTextarea rows={5} cols={30} value={this.state.comment} autoResize={true}
-                                       onChange={(e) => {
-                                           this.setState({comment: e.target.value})
-                                       }}/>
-                    </div>
-                );
-                comment.push(
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <h4>Give Review:</h4>
-                        <Rating value={this.state.review} stars={10} cancel={false} onChange={(e) => {
-                            this.setState({review: e.target.value})
-                        }}/>
-                    </div>
-                );
-                comment.push(
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <Button label="Post Comment" onClick={this.makePost}/>
-                    </div>
-                );
-            } else {
-                comment.push(
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <h4>Select Building:</h4>
-                        <Dropdown style={{'width': '150px'}}
-                                  optionLabel="location"
-                                  value={this.state.building}
-                                  options={locations}
-                                  onChange={this.buildingChanged}
-                                  placeholder="Select a Building"
-                        />
-                    </div>
-                );
-            }
-            comment.push(
-                <div className="p-col-12" style={{'text-align': 'left'}}>
-                    <Button label="Logout" onClick={this.logout}/>
-                </div>
-            );
-        } else {
-            comment.push(
-                <div className="p-col-12" style={{'text-align': 'left'}}>
-                    <h2>Login</h2>
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <h4>Username:</h4>
-                    </div>
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <InputText value={this.state.username}
-                                   onChange={(e) => this.setState({username: e.target.value})}/>
-                    </div>
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <h4>Password:</h4>
-                    </div>
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <InputText value={this.state.password}
-                                   onChange={(e) => this.setState({password: e.target.value})}/>
-                    </div>
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <Button label="Login" onClick={this.login}/>
-                        <Button label="Sign Up" onClick={this.signup} style={{'marginLeft': 4}}/>
-                    </div>
-                </div>
-            )
-        }
-
-        return comment;
-    };*/
 
     render() {
         return (
