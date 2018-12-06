@@ -18,6 +18,7 @@ import {Button} from 'primereact/button';
 import {Password} from 'primereact/password';
 import {InputTextarea} from 'primereact/inputtextarea';
 import {InputText} from 'primereact/inputtext';
+import {Growl} from 'primereact/growl';
 
 import ReviewModule from './api/ReviewModule';
 import LocationModule from './api/LocationModule';
@@ -112,7 +113,7 @@ class App extends Component {
                 this.setState({username: ''});
             });
         } else {
-            // TODO: error prompt that passwords do not match
+            this.growl.show({severity: 'error', summary: 'Error Message', detail: 'Passwords do not match.'});
         }
     }
 
@@ -138,7 +139,7 @@ class App extends Component {
                         return;
                     }
                 }
-
+                this.growl.show({severity: 'error', summary: 'Error Message', detail: 'Password Incorrect.'});
                 uservalid = false;
                 this.forceUpdate();
                 return;
@@ -212,6 +213,7 @@ class App extends Component {
 
     makePost(e) {
         if (this.state.header == '' || this.state.review == 0 || this.state.comment == '') {
+            this.growl.show({severity: 'error', summary: 'Error Message', detail: 'Enter proper information.'});
             return;
         }
 
@@ -232,6 +234,7 @@ class App extends Component {
 
         return fetch(reviewModule.getAddReviewURL(review), {method: "GET"}).then((response) => response.json())
             .then((responseJson) => {
+                this.growl.show({severity: 'success', summary: 'Success Message', detail: 'Comment posted.'});
                 this.forceUpdate();
             })
             .catch((error) => {
@@ -421,6 +424,7 @@ class App extends Component {
 
         return (
             <div className="App">
+                <Growl ref={(el) => this.growl = el} />
                 <div className="p-grid p-col-12">
                     <div className="p-col-8">
                         <Map google={this.props.google} style={mapStyles} zoom={options.zoom} center={options.center}>
