@@ -80,6 +80,7 @@ class App extends Component {
     }
 
     componentDidMount() {
+        document.title = "Study Space";
         locationModule.loadLocations(this.getLocations());
     }
 
