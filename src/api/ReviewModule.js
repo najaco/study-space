@@ -136,10 +136,18 @@ class ReviewModule {
         );
     }
 
+    static _pad(minute) {
+        if (minute < 10) {
+            return "0" + minute;
+        }
+        return minute;
+    }
+
+
     static getTimestamp() {
         let date = new Date();
         let timestamp = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
-        timestamp += " - " + date.getHours() + ":" + date.getMinutes();
+        timestamp += " - " + date.getHours() + ":" + ReviewModule._pad(date.getMinutes());
         return timestamp;
     }
 
