@@ -98,6 +98,7 @@ class App extends Component {
         this.setState({password: ''});
         this.setState({username: ''});
         this.setState({email: ''});
+        this.setState({title: '', comment: ''});
         this.setState({input_state: 0});
     }
 
@@ -223,9 +224,7 @@ class App extends Component {
             timestamp: ReviewModule.getTimestamp()
         };
 
-        this.state.title = '';
-        this.state.review = '';
-        this.state.comment = '';
+        this.setState({title: '', comment: ''});
 
         curr_location_data.comments.push(review);
 
