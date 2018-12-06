@@ -60,6 +60,7 @@ class App extends Component {
             password: '',
             confirm_password: '',
             email: '',
+            coordinates: null,
             input_state: 0 // 0 is login, 1 is signup, 2 is leave review
         };
 
@@ -153,7 +154,7 @@ class App extends Component {
             .then((responseJson) => {
                 curr_location_data.comments = responseJson;
                 let address = curr_location_data.street + ', ' + curr_location_data.city + ', ' + curr_location_data.state;
-                locationModule.addressToCoordinates(address, this.extractCoordinates);
+                locationModule.addressToCoordinates(address, (json) => this.extractCoordinates(json));
                 this.forceUpdate();
             })
             .catch((error) => {
@@ -163,7 +164,7 @@ class App extends Component {
     }
 
     extractCoordinates(json) {
-        coordinates = json.results[0].geometry.location;
+        this.setState({coordinates: json.results[0].geometry.location});
         this.forceUpdate();
     }
 
@@ -195,6 +196,7 @@ class App extends Component {
                     }
                 }
                 this.getLocationReviews(location);
+
             })
             .catch((error) => {
                     console.error(error);
@@ -409,9 +411,9 @@ class App extends Component {
             zoom: 14
         }
 
-        if (!this.isEmptyObject(coordinates)) {
+        if (!this.isEmptyObject(this.state.coordinates)) {
             options = {
-                center: coordinates,
+                center: this.state.coordinates,
                 zoom: 18
             }
         }
@@ -420,9 +422,9 @@ class App extends Component {
             <div className="App">
                 <div className="p-grid p-col-12">
                     <div className="p-col-8">
-                    <Map google={this.props.google} style={mapStyles} zoom={options.zoom} center={options.center}>
-                        <Marker name={curr_location_data.location} position={coordinates} />
-                    </Map>
+                        <Map google={this.props.google} style={mapStyles} zoom={options.zoom} center={options.center}>
+                            <Marker name={curr_location_data.location} position={this.state.coordinates}/>
+                        </Map>
                     </div>
                     <div className="p-col-4">
                         <Card style={{'width': '100%', 'height': '570px', 'text-align': 'left'}}
