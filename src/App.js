@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import './App.css';
+
 /* Google Maps */
-import {GoogleApiWrapper} from 'google-maps-react';
+import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
+
 /* PrimeReact */
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -29,7 +31,7 @@ let locationModule = LocationModule.getInstance();
 let userModule = UserModule.getInstance();
 
 const mapStyles = {
-    width: '100%',
+    width: '1000px',
     height: '570px'
 };
 
@@ -43,6 +45,7 @@ var locations = [];
 
 // Obtain from database
 var curr_location_data = {};
+var coordinates = {};
 
 class App extends Component {
 
@@ -108,7 +111,6 @@ class App extends Component {
             });
         } else {
             // TODO: error prompt that passwords do not match
-            alert("Error: passwords do not match");
         }
     }
 
@@ -150,12 +152,19 @@ class App extends Component {
         return fetch(reviewModule.getLocationCommentsURL(location.shortName), {method: "GET"}).then((response) => response.json())
             .then((responseJson) => {
                 curr_location_data.comments = responseJson;
+                let address = curr_location_data.street + ', ' + curr_location_data.city + ', ' + curr_location_data.state;
+                locationModule.addressToCoordinates(address, this.extractCoordinates);
                 this.forceUpdate();
             })
             .catch((error) => {
                     console.error(error);
                 }
             );
+    }
+
+    extractCoordinates(json) {
+        coordinates = json.results[0].geometry.location;
+        this.forceUpdate();
     }
 
     /** Makes a call to the database to obtain information about a particular location */
@@ -165,7 +174,6 @@ class App extends Component {
                 if (!this.isEmptyObject(responseJson)) {
                     curr_location_data = responseJson[0];
                 } else {
-                    // TODO remove this
                     console.error("Location Data Empty!");
                     curr_location_data = {
                         location: 'Wilmeth Active Learning Center',
@@ -187,7 +195,8 @@ class App extends Component {
                     }
                 }
                 this.getLocationReviews(location);
-            }).catch((error) => {
+            })
+            .catch((error) => {
                     console.error(error);
                 }
             );
@@ -373,7 +382,7 @@ class App extends Component {
             comment.push(
                 <div className="p-col-12" style={{'text-align': 'left'}}>
                     <h4>Select Building:</h4>
-                    <Dropdown style={{'width': '150px'}}
+                    <Dropdown style={{'width': '250px'}}
                               optionLabel="location"
                               value={this.state.building}
                               options={locations}
@@ -394,15 +403,26 @@ class App extends Component {
     };
 
     render() {
+
+        let options = {
+            center: {lat: 40.4318914, lng: -86.91750952604869},
+            zoom: 14
+        }
+
+        if (!this.isEmptyObject(coordinates)) {
+            options = {
+                center: coordinates,
+                zoom: 18
+            }
+        }
+
         return (
             <div className="App">
                 <div className="p-grid p-col-12">
                     <div className="p-col-8">
-                        <GMap options={{
-                            center: {lat: 40.4318914, lng: -86.91750952604869},
-                            zoom: 14
-                        }} style={mapStyles}
-                        />
+                    <Map google={this.props.google} style={mapStyles} zoom={options.zoom} center={options.center}>
+                        <Marker name={curr_location_data.location} position={coordinates} />
+                    </Map>
                     </div>
                     <div className="p-col-4">
                         <Card style={{'width': '100%', 'height': '570px', 'text-align': 'left'}}
@@ -411,12 +431,11 @@ class App extends Component {
                         </Card>
                     </div>
                     <div className="p-col-12">
-                        <Card style={{'width': '100%', 'height': '100%', 'text-align': 'left'}}
-                              title={"Study Space"}>
+                        <Card style={{'width': '100%', 'height': '100%', 'text-align': 'left'}} title={"Study Space"}>
                             <div className="p-grid">
                                 <div className="p-col-12" style={{'text-align': 'left'}}>
                                     <h4>Select Building:</h4>
-                                    <Dropdown style={{'width': '150px'}}
+                                    <Dropdown style={{'width': '250px'}}
                                               optionLabel="location"
                                               value={this.state.building}
                                               options={locations}
@@ -436,10 +455,5 @@ class App extends Component {
 }
 
 export default GoogleApiWrapper({
-    apiKey: 'AIzaSyD5x5n_np54p6TzuSVG_DYu9nEQSWH75LI'
-})
-
-(
-    App
-)
-;
+    apiKey: ('AIzaSyD5x5n_np54p6TzuSVG_DYu9nEQSWH75LI')
+})(App);

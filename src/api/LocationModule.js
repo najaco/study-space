@@ -115,7 +115,7 @@ class LocationModule {
      * @param callback - the function to handle the response json
      */
     addressToCoordinates(address, callback) {
-        let url = "http://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + G_MAP_API_KEY;
+        let url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + G_MAP_API_KEY;
         NetworkModule.httpGet(url, callback);
     }
 
