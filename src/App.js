@@ -108,6 +108,7 @@ class App extends Component {
             });
         } else {
             // TODO: error prompt that passwords do not match
+            alert("Error: passwords do not match");
         }
     }
 
@@ -164,6 +165,7 @@ class App extends Component {
                 if (!this.isEmptyObject(responseJson)) {
                     curr_location_data = responseJson[0];
                 } else {
+                    // TODO remove this
                     console.error("Location Data Empty!");
                     curr_location_data = {
                         location: 'Wilmeth Active Learning Center',
@@ -185,8 +187,7 @@ class App extends Component {
                     }
                 }
                 this.getLocationReviews(location);
-            })
-            .catch((error) => {
+            }).catch((error) => {
                     console.error(error);
                 }
             );
@@ -410,7 +411,8 @@ class App extends Component {
                         </Card>
                     </div>
                     <div className="p-col-12">
-                        <Card style={{'width': '100%', 'height': '100%', 'text-align': 'left'}} title={"Study Space"}>
+                        <Card style={{'width': '100%', 'height': '100%', 'text-align': 'left'}}
+                              title={"Study Space"}>
                             <div className="p-grid">
                                 <div className="p-col-12" style={{'text-align': 'left'}}>
                                     <h4>Select Building:</h4>
@@ -435,4 +437,9 @@ class App extends Component {
 
 export default GoogleApiWrapper({
     apiKey: 'AIzaSyD5x5n_np54p6TzuSVG_DYu9nEQSWH75LI'
-})(App);
+})
+
+(
+    App
+)
+;

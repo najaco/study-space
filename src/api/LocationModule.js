@@ -108,7 +108,21 @@ class LocationModule {
         return SERVER_URL + "locations?command=review";
     }
 
+    /**
+     * @description uses the google maps geocode api to convert the selected address
+     * into its latitude and longitude position
+     * @param address - the street address of the building
+     * @param callback - the function to handle the response json
+     */
+    addressToCoordinates(address, callback) {
+        let url = "http://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + G_MAP_API_KEY;
+        NetworkModule.httpGet(url, callback);
+    }
+
+
 }
 
 // public class
 export default LocationModule;
+
+export const G_MAP_API_KEY = "AIzaSyD5x5n_np54p6TzuSVG_DYu9nEQSWH75LI";
