@@ -31,7 +31,7 @@ let locationModule = LocationModule.getInstance();
 let userModule = UserModule.getInstance();
 
 const mapStyles = {
-    width: '1000px',
+    width: '65%',
     height: '570px'
 };
 
