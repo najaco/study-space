@@ -427,7 +427,7 @@ class App extends Component {
                             <Marker name={curr_location_data.location} position={this.state.coordinates}/>
                         </Map>
                     </div>
-                    <div className="p-col-4">
+                    <div className="p-col-4" style={{'z-index': '100'}}>
                         <Card style={{'width': '100%', 'height': '570px', 'text-align': 'left'}}
                               title={"Give a Review"}>
                             {this.renderInputCard()}
