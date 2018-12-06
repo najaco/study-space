@@ -1,18 +1,18 @@
 {
   "main.css": "/study-space/static/css/main.16f7b17a.chunk.css",
-  "main.js": "/study-space/static/js/main.9203284d.chunk.js",
-  "main.js.map": "/study-space/static/js/main.9203284d.chunk.js.map",
+  "main.js": "/study-space/static/js/main.a4adc9c6.chunk.js",
+  "main.js.map": "/study-space/static/js/main.a4adc9c6.chunk.js.map",
   "static/css/1.c8d2622a.chunk.css": "/study-space/static/css/1.c8d2622a.chunk.css",
   "static/js/1.01d4aa7b.chunk.js": "/study-space/static/js/1.01d4aa7b.chunk.js",
   "static/js/1.01d4aa7b.chunk.js.map": "/study-space/static/js/1.01d4aa7b.chunk.js.map",
   "runtime~main.js": "/study-space/static/js/runtime~main.dc782c92.js",
   "runtime~main.js.map": "/study-space/static/js/runtime~main.dc782c92.js.map",
   "static/media/primeicons.css": "/study-space/static/media/primeicons.38d77552.svg",
-  "static/media/theme.css": "/study-space/static/media/open-sans-v15-latin-regular.cffb686d.woff2",
+  "static/media/theme.css": "/study-space/static/media/open-sans-v15-latin-300.60c86674.woff2",
   "static/media/primereact.min.css": "/study-space/static/media/line.567f5738.gif",
   "static/css/main.16f7b17a.chunk.css.map": "/study-space/static/css/main.16f7b17a.chunk.css.map",
   "static/css/1.c8d2622a.chunk.css.map": "/study-space/static/css/1.c8d2622a.chunk.css.map",
   "index.html": "/study-space/index.html",
-  "precache-manifest.5600f098aa1507ef4473fbbc69018997.js": "/study-space/precache-manifest.5600f098aa1507ef4473fbbc69018997.js",
+  "precache-manifest.cab7360e902ab381739bedbc9e13bfbf.js": "/study-space/precache-manifest.cab7360e902ab381739bedbc9e13bfbf.js",
   "service-worker.js": "/study-space/service-worker.js"
 }

@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/study-space/static/media/open-sans-v15-latin-700.623e3205.woff"
   },
   {
-    "revision": "9203284d0bdc2e339895",
+    "revision": "a4adc9c69e2cb2744cb0",
     "url": "/study-space/static/css/main.16f7b17a.chunk.css"
   },
   {
@@ -24,16 +24,16 @@ self.__precacheManifest = [
     "url": "/study-space/static/media/open-sans-v15-latin-300.76b56857.eot"
   },
   {
-    "revision": "cffb686d7d2f4682df8342bd4d276e09",
-    "url": "/study-space/static/media/open-sans-v15-latin-regular.cffb686d.woff2"
-  },
-  {
     "revision": "60c866748ff15f5b347fdba64596b1b1",
     "url": "/study-space/static/media/open-sans-v15-latin-300.60c86674.woff2"
   },
   {
     "revision": "9dce7f01715340861bdb57318e2f3fdc",
     "url": "/study-space/static/media/open-sans-v15-latin-regular.9dce7f01.eot"
+  },
+  {
+    "revision": "cffb686d7d2f4682df8342bd4d276e09",
+    "url": "/study-space/static/media/open-sans-v15-latin-regular.cffb686d.woff2"
   },
   {
     "revision": "148a6749baa5f658a45183ddb5ee159f",
@@ -52,8 +52,8 @@ self.__precacheManifest = [
     "url": "/study-space/static/media/open-sans-v15-latin-regular.bf2d0783.woff"
   },
   {
-    "revision": "9203284d0bdc2e339895",
-    "url": "/study-space/static/js/main.9203284d.chunk.js"
+    "revision": "a4adc9c69e2cb2744cb0",
+    "url": "/study-space/static/js/main.a4adc9c6.chunk.js"
   },
   {
     "revision": "177cc92d2e8027712a8c1724abd272cd",
@@ -104,7 +104,7 @@ self.__precacheManifest = [
     "url": "/study-space/static/css/1.c8d2622a.chunk.css"
   },
   {
-    "revision": "4680163217efad7d271b00746324ad9e",
+    "revision": "9a4a11c027f62a3652326dcb5b634684",
     "url": "/study-space/index.html"
   }
 ];
