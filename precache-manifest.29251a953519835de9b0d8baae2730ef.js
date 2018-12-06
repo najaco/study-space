@@ -4,16 +4,16 @@ self.__precacheManifest = [
     "url": "/study-space/static/media/open-sans-v15-latin-700.623e3205.woff"
   },
   {
-    "revision": "90a2adc2c037cef912dc",
-    "url": "/study-space/static/css/main.16e005da.chunk.css"
+    "revision": "b4c0b3a13a1caa561b8c",
+    "url": "/study-space/static/css/main.8aad6d4d.chunk.css"
   },
   {
     "revision": "38d77552b0353684a208177482d5b6ee",
     "url": "/study-space/static/media/primeicons.38d77552.svg"
   },
   {
-    "revision": "c6b3c7aecada9716b58c",
-    "url": "/study-space/static/js/1.c6b3c7ae.chunk.js"
+    "revision": "c9403b1ec8f6c7d092f4",
+    "url": "/study-space/static/js/1.c9403b1e.chunk.js"
   },
   {
     "revision": "dc782c9281cc4937ca54",
@@ -52,8 +52,8 @@ self.__precacheManifest = [
     "url": "/study-space/static/media/open-sans-v15-latin-regular.bf2d0783.woff"
   },
   {
-    "revision": "90a2adc2c037cef912dc",
-    "url": "/study-space/static/js/main.90a2adc2.chunk.js"
+    "revision": "b4c0b3a13a1caa561b8c",
+    "url": "/study-space/static/js/main.b4c0b3a1.chunk.js"
   },
   {
     "revision": "177cc92d2e8027712a8c1724abd272cd",
@@ -68,12 +68,12 @@ self.__precacheManifest = [
     "url": "/study-space/static/media/open-sans-v15-latin-700.7e08cc65.ttf"
   },
   {
-    "revision": "7aab4c13671282c90669eb6a10357e41",
-    "url": "/study-space/static/media/open-sans-v15-latin-regular.7aab4c13.svg"
-  },
-  {
     "revision": "27ef0b062b2e221df16f3bbd97c2dca8",
     "url": "/study-space/static/media/open-sans-v15-latin-300.27ef0b06.svg"
+  },
+  {
+    "revision": "7aab4c13671282c90669eb6a10357e41",
+    "url": "/study-space/static/media/open-sans-v15-latin-regular.7aab4c13.svg"
   },
   {
     "revision": "2e00b2635b51ba336b4b67a5d0bc03c7",
@@ -100,11 +100,11 @@ self.__precacheManifest = [
     "url": "/study-space/static/media/primeicons.71bb3d79.woff"
   },
   {
-    "revision": "c6b3c7aecada9716b58c",
-    "url": "/study-space/static/css/1.29769f2c.chunk.css"
+    "revision": "c9403b1ec8f6c7d092f4",
+    "url": "/study-space/static/css/1.bc0176bc.chunk.css"
   },
   {
-    "revision": "61f27731ec82b91a0bb7ba8f4ffb931f",
+    "revision": "324e4960391599a1d90fc68224f7e14f",
     "url": "/study-space/index.html"
   }
 ];
