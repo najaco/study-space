@@ -362,7 +362,7 @@ class App extends Component {
             );
             comment.push(
                 <div className="p-col-12" style={{'text-align': 'left'}}>
-                    <h4>Comment Title:</h4>
+                    <h4>Review:</h4>
                     <InputTextarea rows={5} cols={30} value={this.state.comment} autoResize={true}
                                    onChange={(e) => {
                                        this.setState({comment: e.target.value})
@@ -371,7 +371,7 @@ class App extends Component {
             );
             comment.push(
                 <div className="p-col-12" style={{'text-align': 'left'}}>
-                    <h4>Give Review:</h4>
+                    <h4>Rating:</h4>
                     <Rating value={this.state.review} stars={10} cancel={false} onChange={(e) => {
                         this.setState({review: e.target.value})
                     }}/>
