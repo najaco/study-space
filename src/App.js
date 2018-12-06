@@ -99,7 +99,6 @@ class App extends Component {
         this.setState({username: ''});
         this.setState({email: ''});
         this.setState({input_state: 0});
-        this.validateUserData();
     }
 
     signup() {
