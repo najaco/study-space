@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import './App.css';
+
 /* Google Maps */
-import {GoogleApiWrapper} from 'google-maps-react';
+import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
+
 /* PrimeReact */
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -13,6 +15,7 @@ import {Dropdown} from 'primereact/dropdown';
 import {Card} from 'primereact/card';
 import {Rating} from 'primereact/rating';
 import {Button} from 'primereact/button';
+import {Password} from 'primereact/password';
 import {InputTextarea} from 'primereact/inputtextarea';
 import {InputText} from 'primereact/inputtext';
 
@@ -28,7 +31,7 @@ let locationModule = LocationModule.getInstance();
 let userModule = UserModule.getInstance();
 
 const mapStyles = {
-    width: '100%',
+    width: '1000px',
     height: '570px'
 };
 
@@ -42,6 +45,7 @@ var locations = [];
 
 // Obtain from database
 var curr_location_data = {};
+var coordinates = {};
 
 class App extends Component {
 
@@ -54,7 +58,9 @@ class App extends Component {
             title: '',
             username: '',
             password: '',
+            confirm_password: '',
             email: '',
+            coordinates: null,
             input_state: 0 // 0 is login, 1 is signup, 2 is leave review
         };
 
@@ -74,6 +80,7 @@ class App extends Component {
     }
 
     componentDidMount() {
+        document.title = "Study Space";
         locationModule.loadLocations(this.getLocations());
     }
 
@@ -96,9 +103,17 @@ class App extends Component {
     }
 
     signup() {
-        NetworkModule.httpGet(userModule.getAddUserURL(this.state.username, this.state.password, this.state.email, "null"), () => {
-            this.setState({input_state: 2});
-        });
+        if (this.state.password === this.state.confirm_password) {
+            NetworkModule.httpGet(userModule.getAddUserURL(this.state.username, this.state.password, this.state.email, "null"), () => {
+                this.setState({input_state: 2});
+                username = this.state.username;
+                password = '';
+                this.setState({password: ''});
+                this.setState({username: ''});
+            });
+        } else {
+            // TODO: error prompt that passwords do not match
+        }
     }
 
     getLocations() {
@@ -117,9 +132,6 @@ class App extends Component {
         fetch(userModule.getGetUserURL(username), {method: "GET"}).then((response) => response.json())
             .then((responseJson) => {
                 if (!this.isEmptyObject(responseJson[0])) {
-                    console.log(responseJson[0]);
-                    console.log(password);
-                    console.log();
                     if (password === responseJson[0].password) {
                         uservalid = true;
                         this.setState({input_state: 2});
@@ -142,12 +154,19 @@ class App extends Component {
         return fetch(reviewModule.getLocationCommentsURL(location.shortName), {method: "GET"}).then((response) => response.json())
             .then((responseJson) => {
                 curr_location_data.comments = responseJson;
+                let address = curr_location_data.street + ', ' + curr_location_data.city + ', ' + curr_location_data.state;
+                locationModule.addressToCoordinates(address, (json) => this.extractCoordinates(json));
                 this.forceUpdate();
             })
             .catch((error) => {
                     console.error(error);
                 }
             );
+    }
+
+    extractCoordinates(json) {
+        this.setState({coordinates: json.results[0].geometry.location});
+        this.forceUpdate();
     }
 
     /** Makes a call to the database to obtain information about a particular location */
@@ -178,6 +197,7 @@ class App extends Component {
                     }
                 }
                 this.getLocationReviews(location);
+
             })
             .catch((error) => {
                     console.error(error);
@@ -191,6 +211,10 @@ class App extends Component {
     }
 
     makePost(e) {
+        if (this.state.header == '' || this.state.review == 0 || this.state.comment == '') {
+            return;
+        }
+
         let review = {
             username: username,
             loc: this.state.building.shortName,
@@ -199,6 +223,10 @@ class App extends Component {
             body: this.state.comment,
             timestamp: ReviewModule.getTimestamp()
         };
+
+        this.state.title = '';
+        this.state.review = '';
+        this.state.comment = '';
 
         curr_location_data.comments.push(review);
 
@@ -283,8 +311,8 @@ class App extends Component {
                     <h4>Password:</h4>
                 </div>
                 <div className="p-col-12" style={{'text-align': 'left'}}>
-                    <InputText value={this.state.password}
-                               onChange={(e) => this.setState({password: e.target.value})}/>
+                    <Password value={this.state.password} feedback={false}
+                              onChange={(e) => this.setState({password: e.target.value})}/>
                 </div>
                 <div className="p-col-12" style={{'text-align': 'left'}}>
                     <Button label="Login" onClick={this.login}/>
@@ -305,12 +333,12 @@ class App extends Component {
                            onChange={(e) => this.setState({username: e.target.value})}/>
 
                 <h4>Password:</h4>
-                <InputText value={this.state.password}
-                           onChange={(e) => this.setState({password: e.target.value})}/>
+                <Password value={this.state.password}
+                          onChange={(e) => this.setState({password: e.target.value})}/>
 
                 <h4>Confirm Password:</h4>
-                <InputText value={this.state.password}
-                           onChange={(e) => this.setState({password: e.target.value})}/>
+                <Password value={this.state.confirm_password} feedback={false}
+                          onChange={(e) => this.setState({confirm_password: e.target.value})}/>
 
                 <h4>Email:</h4>
                 <InputText value={this.state.email}
@@ -357,7 +385,7 @@ class App extends Component {
             comment.push(
                 <div className="p-col-12" style={{'text-align': 'left'}}>
                     <h4>Select Building:</h4>
-                    <Dropdown style={{'width': '150px'}}
+                    <Dropdown style={{'width': '250px'}}
                               optionLabel="location"
                               value={this.state.building}
                               options={locations}
@@ -377,97 +405,27 @@ class App extends Component {
         return comment;
     };
 
-   /* maybeAllowNewComment = () => {
-        let comment = [];
-        // TODO: Allow user to login if they aren't authenticated
-        if (uservalid) {
-            if (this.state.building != null) {
-                comment.push(
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <h4>Comment Title:</h4>
-                        <InputText value={this.state.title} onChange={(e) => this.setState({title: e.target.value})}/>
-                    </div>
-                );
-                comment.push(
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <h4>Comment Title:</h4>
-                        <InputTextarea rows={5} cols={30} value={this.state.comment} autoResize={true}
-                                       onChange={(e) => {
-                                           this.setState({comment: e.target.value})
-                                       }}/>
-                    </div>
-                );
-                comment.push(
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <h4>Give Review:</h4>
-                        <Rating value={this.state.review} stars={10} cancel={false} onChange={(e) => {
-                            this.setState({review: e.target.value})
-                        }}/>
-                    </div>
-                );
-                comment.push(
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <Button label="Post Comment" onClick={this.makePost}/>
-                    </div>
-                );
-            } else {
-                comment.push(
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <h4>Select Building:</h4>
-                        <Dropdown style={{'width': '150px'}}
-                                  optionLabel="location"
-                                  value={this.state.building}
-                                  options={locations}
-                                  onChange={this.buildingChanged}
-                                  placeholder="Select a Building"
-                        />
-                    </div>
-                );
-            }
-            comment.push(
-                <div className="p-col-12" style={{'text-align': 'left'}}>
-                    <Button label="Logout" onClick={this.logout}/>
-                </div>
-            );
-        } else {
-            comment.push(
-                <div className="p-col-12" style={{'text-align': 'left'}}>
-                    <h2>Login</h2>
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <h4>Username:</h4>
-                    </div>
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <InputText value={this.state.username}
-                                   onChange={(e) => this.setState({username: e.target.value})}/>
-                    </div>
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <h4>Password:</h4>
-                    </div>
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <InputText value={this.state.password}
-                                   onChange={(e) => this.setState({password: e.target.value})}/>
-                    </div>
-                    <div className="p-col-12" style={{'text-align': 'left'}}>
-                        <Button label="Login" onClick={this.login}/>
-                        <Button label="Sign Up" onClick={this.signup} style={{'marginLeft': 4}}/>
-                    </div>
-                </div>
-            )
+    render() {
+
+        let options = {
+            center: {lat: 40.4318914, lng: -86.91750952604869},
+            zoom: 14
         }
 
-        return comment;
-    };*/
+        if (!this.isEmptyObject(this.state.coordinates)) {
+            options = {
+                center: this.state.coordinates,
+                zoom: 18
+            }
+        }
 
-    render() {
         return (
             <div className="App">
                 <div className="p-grid p-col-12">
                     <div className="p-col-8">
-                        <GMap options={{
-                            center: {lat: 40.4318914, lng: -86.91750952604869},
-                            zoom: 14
-                        }} style={mapStyles}
-                        />
+                        <Map google={this.props.google} style={mapStyles} zoom={options.zoom} center={options.center}>
+                            <Marker name={curr_location_data.location} position={this.state.coordinates}/>
+                        </Map>
                     </div>
                     <div className="p-col-4">
                         <Card style={{'width': '100%', 'height': '570px', 'text-align': 'left'}}
@@ -480,7 +438,7 @@ class App extends Component {
                             <div className="p-grid">
                                 <div className="p-col-12" style={{'text-align': 'left'}}>
                                     <h4>Select Building:</h4>
-                                    <Dropdown style={{'width': '150px'}}
+                                    <Dropdown style={{'width': '250px'}}
                                               optionLabel="location"
                                               value={this.state.building}
                                               options={locations}
@@ -500,5 +458,5 @@ class App extends Component {
 }
 
 export default GoogleApiWrapper({
-    apiKey: 'AIzaSyD5x5n_np54p6TzuSVG_DYu9nEQSWH75LI'
+    apiKey: ('AIzaSyD5x5n_np54p6TzuSVG_DYu9nEQSWH75LI')
 })(App);
