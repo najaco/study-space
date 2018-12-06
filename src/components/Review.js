@@ -7,7 +7,7 @@ export default class Review extends Component {
     render() {
         return (
             <div className="p-col-12">
-                <Card title={this.props.header} subTitle={this.props.username}>
+                <Card title={this.props.header} subTitle={'Author: ' + this.props.username}>
                     <div className="p-grid">
                         <div className="p-col-12" style={{'text-align': 'left'}}>
                             {this.props.body}

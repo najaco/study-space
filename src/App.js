@@ -13,6 +13,7 @@ import {Dropdown} from 'primereact/dropdown';
 import {Card} from 'primereact/card';
 import {Rating} from 'primereact/rating';
 import {Button} from 'primereact/button';
+import {Password} from 'primereact/password';
 import {InputTextarea} from 'primereact/inputtextarea';
 import {InputText} from 'primereact/inputtext';
 
@@ -54,6 +55,7 @@ class App extends Component {
             title: '',
             username: '',
             password: '',
+            confirm_password: '',
             email: '',
             input_state: 0 // 0 is login, 1 is signup, 2 is leave review
         };
@@ -96,9 +98,13 @@ class App extends Component {
     }
 
     signup() {
-        NetworkModule.httpGet(userModule.getAddUserURL(this.state.username, this.state.password, this.state.email, "null"), () => {
-            this.setState({input_state: 2});
-        });
+        if (this.state.password === this.state.confirm_password) {
+            NetworkModule.httpGet(userModule.getAddUserURL(this.state.username, this.state.password, this.state.email, "null"), () => {
+                this.setState({input_state: 2});
+            });
+        } else {
+            // TODO: error prompt that passwords do not match
+        }
     }
 
     getLocations() {
@@ -117,9 +123,6 @@ class App extends Component {
         fetch(userModule.getGetUserURL(username), {method: "GET"}).then((response) => response.json())
             .then((responseJson) => {
                 if (!this.isEmptyObject(responseJson[0])) {
-                    console.log(responseJson[0]);
-                    console.log(password);
-                    console.log();
                     if (password === responseJson[0].password) {
                         uservalid = true;
                         this.setState({input_state: 2});
@@ -191,6 +194,10 @@ class App extends Component {
     }
 
     makePost(e) {
+        if (this.state.header == '' || this.state.review == 0 || this.state.comment == '') {
+            return;
+        }
+       
         let review = {
             username: username,
             loc: this.state.building.shortName,
@@ -199,6 +206,10 @@ class App extends Component {
             body: this.state.comment,
             timestamp: ReviewModule.getTimestamp()
         };
+
+        this.state.title = '';
+        this.state.review = '';
+        this.state.comment = '';
 
         curr_location_data.comments.push(review);
 
@@ -283,7 +294,7 @@ class App extends Component {
                     <h4>Password:</h4>
                 </div>
                 <div className="p-col-12" style={{'text-align': 'left'}}>
-                    <InputText value={this.state.password}
+                    <Password value={this.state.password} feedback={false}
                                onChange={(e) => this.setState({password: e.target.value})}/>
                 </div>
                 <div className="p-col-12" style={{'text-align': 'left'}}>
@@ -305,12 +316,12 @@ class App extends Component {
                            onChange={(e) => this.setState({username: e.target.value})}/>
 
                 <h4>Password:</h4>
-                <InputText value={this.state.password}
+                <Password value={this.state.password}
                            onChange={(e) => this.setState({password: e.target.value})}/>
 
                 <h4>Confirm Password:</h4>
-                <InputText value={this.state.password}
-                           onChange={(e) => this.setState({password: e.target.value})}/>
+                <Password value={this.state.confirm_password} feedback={false}
+                           onChange={(e) => this.setState({confirm_password: e.target.value})}/>
 
                 <h4>Email:</h4>
                 <InputText value={this.state.email}
