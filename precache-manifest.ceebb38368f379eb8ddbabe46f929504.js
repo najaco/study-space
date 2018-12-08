@@ -20,6 +20,10 @@ self.__precacheManifest = [
     "url": "/study-space/static/js/runtime~main.dc782c92.js"
   },
   {
+    "revision": "60c866748ff15f5b347fdba64596b1b1",
+    "url": "/study-space/static/media/open-sans-v15-latin-300.60c86674.woff2"
+  },
+  {
     "revision": "76b56857ebbae3a5a689f213feb11af0",
     "url": "/study-space/static/media/open-sans-v15-latin-300.76b56857.eot"
   },
@@ -36,16 +40,12 @@ self.__precacheManifest = [
     "url": "/study-space/static/media/open-sans-v15-latin-700.d08c09f2.woff2"
   },
   {
-    "revision": "521d17bc9f3526c690e8ada6eee55bec",
-    "url": "/study-space/static/media/open-sans-v15-latin-300.521d17bc.woff"
-  },
-  {
-    "revision": "bf2d0783515b7d75c35bde69e01b3135",
-    "url": "/study-space/static/media/open-sans-v15-latin-regular.bf2d0783.woff"
-  },
-  {
     "revision": "623e3205570002af47fc2b88f9335d19",
     "url": "/study-space/static/media/open-sans-v15-latin-700.623e3205.woff"
+  },
+  {
+    "revision": "cffb686d7d2f4682df8342bd4d276e09",
+    "url": "/study-space/static/media/open-sans-v15-latin-regular.cffb686d.woff2"
   },
   {
     "revision": "177cc92d2e8027712a8c1724abd272cd",
@@ -56,16 +56,16 @@ self.__precacheManifest = [
     "url": "/study-space/static/js/main.bbc59ca0.chunk.js"
   },
   {
+    "revision": "bf2d0783515b7d75c35bde69e01b3135",
+    "url": "/study-space/static/media/open-sans-v15-latin-regular.bf2d0783.woff"
+  },
+  {
+    "revision": "521d17bc9f3526c690e8ada6eee55bec",
+    "url": "/study-space/static/media/open-sans-v15-latin-300.521d17bc.woff"
+  },
+  {
     "revision": "7e08cc656863d52bcb5cd34805ac605b",
     "url": "/study-space/static/media/open-sans-v15-latin-700.7e08cc65.ttf"
-  },
-  {
-    "revision": "60c866748ff15f5b347fdba64596b1b1",
-    "url": "/study-space/static/media/open-sans-v15-latin-300.60c86674.woff2"
-  },
-  {
-    "revision": "cffb686d7d2f4682df8342bd4d276e09",
-    "url": "/study-space/static/media/open-sans-v15-latin-regular.cffb686d.woff2"
   },
   {
     "revision": "27ef0b062b2e221df16f3bbd97c2dca8",
@@ -92,12 +92,12 @@ self.__precacheManifest = [
     "url": "/study-space/static/media/primeicons.473e2a74.ttf"
   },
   {
-    "revision": "71bb3d79dcf18b45ae845409e7c2ada3",
-    "url": "/study-space/static/media/primeicons.71bb3d79.woff"
-  },
-  {
     "revision": "b8eccb1059ea5faaf6d8b7d457ccfd09",
     "url": "/study-space/static/media/primeicons.b8eccb10.eot"
+  },
+  {
+    "revision": "71bb3d79dcf18b45ae845409e7c2ada3",
+    "url": "/study-space/static/media/primeicons.71bb3d79.woff"
   },
   {
     "revision": "01d4aa7ba0beff103e99",
