@@ -18,7 +18,7 @@ Social Network where users share available study spaces on campus.
 
 ## Website Link
 
-[https://nathancohen4299.github.io/study-space/](https://nathancohen4299.github.io/study-space/)
+[https://najaco.github.io/study-space/](https://nathancohen4299.github.io/study-space/)
 
 ## Demo Video
 
